@@ -14,6 +14,7 @@ typedef struct Player
   Rectangle collision;
 } Player;
 
+void initialize_player(Player *player, float x, float y);
 void update_player(Player *player, float deltaTime);
 
 #endif

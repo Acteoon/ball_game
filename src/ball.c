@@ -48,10 +48,10 @@ void update_ball(Ball *ball, Player *player, float deltaTime)
 
   ball->speed.y += GRAVITY;
   
-  if (ball->speed.x * deltaTime > MAX_SPEED) ball->speed.x = MAX_SPEED / deltaTime;
-  if (ball->speed.x * deltaTime < -MAX_SPEED) ball->speed.x = -MAX_SPEED / deltaTime;
-  if (ball->speed.y * deltaTime > MAX_SPEED) ball->speed.y = MAX_SPEED / deltaTime;
-  if (ball->speed.y * deltaTime < -MAX_SPEED) ball->speed.y = -MAX_SPEED / deltaTime;
+  if (ball->speed.x  > MAX_SPEED) ball->speed.x = MAX_SPEED ;
+  if (ball->speed.x  < -MAX_SPEED) ball->speed.x = -MAX_SPEED; 
+  if (ball->speed.y  > MAX_SPEED) ball->speed.y = MAX_SPEED ;
+  if (ball->speed.y  < -MAX_SPEED) ball->speed.y = -MAX_SPEED ;
 
   ball->center_pos.x += ball->speed.x * deltaTime;
   ball->center_pos.y += ball->speed.y * deltaTime;

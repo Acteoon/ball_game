@@ -41,7 +41,7 @@ typedef struct
   Vector2 start;
   Vector2 end;
   float speed;
-  int distance;
+  float distance;
   Vector2 direction;
 }linear_fly_pattern_data;
 

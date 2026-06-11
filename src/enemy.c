@@ -89,10 +89,12 @@ void init_enemy(Enemy *enemy, fly_position spawn_position, enemy_type type, enem
           case CIRCULAR:
             enemy->circular_data.radius = ENEMY_CIRCULAR_RADIUS_NORMAL;
             enemy->circular_data.angular_speed = ENEMY_CIRCULAR_SPEED_NORMAL;
+            enemy->circular_data.angle = 0.0f;
             break;
           case INFINITE:
             enemy->infinite_data.radius = ENEMY_INFINITE_RADIUS_NORMAL;
             enemy->infinite_data.speed = ENEMY_INFINITE_SPEED_NORMAL;
+            enemy->infinite_data.time_parameter = 0.0f;
             break;
         }
         break;
@@ -106,10 +108,12 @@ void init_enemy(Enemy *enemy, fly_position spawn_position, enemy_type type, enem
           case CIRCULAR:
             enemy->circular_data.radius = ENEMY_CIRCULAR_RADIUS_PEST;
             enemy->circular_data.angular_speed = ENEMY_CIRCULAR_SPEED_PEST;
+            enemy->circular_data.angle = 0.0f;
             break;
           case INFINITE:
             enemy->infinite_data.radius = ENEMY_INFINITE_RADIUS_PEST;
             enemy->infinite_data.speed = ENEMY_INFINITE_SPEED_PEST;
+            enemy->infinite_data.time_parameter = 0.0f;
             break;
         }
         break;
@@ -123,10 +127,12 @@ void init_enemy(Enemy *enemy, fly_position spawn_position, enemy_type type, enem
           case CIRCULAR:
             enemy->circular_data.radius = ENEMY_CIRCULAR_RADIUS_BUFF;
             enemy->circular_data.angular_speed = ENEMY_CIRCULAR_SPEED_BUFF;
+            enemy->circular_data.angle = 0.0f;
             break;
           case INFINITE:
             enemy->infinite_data.radius = ENEMY_INFINITE_RADIUS_BUFF;
             enemy->infinite_data.speed = ENEMY_INFINITE_SPEED_BUFF;
+            enemy->infinite_data.time_parameter = 0.0f;
             break;
         }
         break;

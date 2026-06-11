@@ -15,13 +15,20 @@ int main(void)
   Player player;
   initialize_player(&player, SCREEN_WIDTH / 2, SCREEN_HEIGHT - SCREEN_HEIGHT / PLAYER_SPAWN_DIVISOR);
 
-  player.collision = (Rectangle){ .x = player.texture_pos.x, .y = player.texture_pos.y, .width = player.texture.width * player.scale, .height = player.texture.height * player.scale };
-
   Ball ball;
  
   init_ball(&ball, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 
   Enemy enemy[ENEMY_COUNT];
+  /*
+  for (int i = 0; i < ENEMY_COUNT; i++)
+  {
+    fly_position pos = (fly_position)(i % 5);
+    enemy_type type = (enemy_type)(i % 3);
+    enemy_fly_pattern pattern = (enemy_fly_pattern)(i % 3);
+    init_enemy(&enemy[i], pos, type, pattern);
+  } 
+  */ 
 
   SetTargetFPS(FPS);
 
@@ -34,9 +41,17 @@ int main(void)
 
     update_player(&player, deltaTime);
     update_ball(&ball, &player, deltaTime);
+    for (int i = 0; i < ENEMY_COUNT; i++)
+    {
+      update_enemy(&enemy[i], deltaTime);
+    }
 
     DrawTextureEx(player.texture, player.texture_pos, player.rotation, player.scale, WHITE);
     DrawTextureEx(ball.texture, ball.texture_pos, ball.rotation, ball.scale, WHITE);
+    for (int i = 0; i < ENEMY_COUNT; i++)
+    {
+      DrawTextureEx(enemy[i].texture, enemy[i].texture_pos, enemy[i].rotation, enemy[i].scale, WHITE);
+    }
     
     DrawRectangleLines(player.collision.x, player.collision.y, player.collision.width, player.collision.height, RED);
     DrawCircleLines(ball.texture_pos.x + ball.radius, ball.texture_pos.y + ball.radius, ball.radius, RED);
@@ -44,6 +59,10 @@ int main(void)
   }
   UnloadTexture(player.texture);
   UnloadTexture(ball.texture);
+  for (int i = 0; i < ENEMY_COUNT; i++) 
+  {
+    UnloadTexture(enemy[i].texture);
+  }
   CloseWindow();
 
   return 0;

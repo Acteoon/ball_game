@@ -1,10 +1,8 @@
 #include "raylib.h"
+#include "constants.h"
 #include "player.h"
 #include "ball.h"
 #include "enemy.h"
-
-#define SCREEN_WIDTH 1920
-#define SCREEN_HEIGHT 1080
 
 int main(void) 
 {
@@ -15,7 +13,7 @@ int main(void)
   InitWindow(screenWidth, screenHeight, "Ball_Game");
   
   Player player;
-  initialize_player(&player, SCREEN_WIDTH / 2, SCREEN_HEIGHT - SCREEN_HEIGHT / 10);
+  initialize_player(&player, SCREEN_WIDTH / 2, SCREEN_HEIGHT - SCREEN_HEIGHT / PLAYER_SPAWN_DIVISOR);
 
   player.collision = (Rectangle){ .x = player.texture_pos.x, .y = player.texture_pos.y, .width = player.texture.width * player.scale, .height = player.texture.height * player.scale };
 
@@ -23,9 +21,9 @@ int main(void)
  
   init_ball(&ball, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 
-  Enemy enemy[60];
+  Enemy enemy[ENEMY_COUNT];
 
-  SetTargetFPS(60);
+  SetTargetFPS(FPS);
 
   while (!WindowShouldClose()) 
   {

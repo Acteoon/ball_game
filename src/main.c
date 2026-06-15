@@ -19,7 +19,7 @@ int main(void)
  
   init_ball(&ball, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 
-  Enemy enemy[ENEMY_COUNT];
+  Enemy enemy[ENEMY_COUNT] = {0};
   /*
   for (int i = 0; i < ENEMY_COUNT; i++)
   {
@@ -29,6 +29,9 @@ int main(void)
     init_enemy(&enemy[i], pos, type, pattern);
   } 
   */ 
+
+  init_enemy(&enemy[0], CENTER, NORMAL, LINEAR);
+
 
   SetTargetFPS(FPS);
 

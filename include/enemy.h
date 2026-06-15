@@ -2,18 +2,20 @@
 #define ENEMY_H
 
 #include "raylib.h"
+#include <stdbool.h>
 
-typedef enum 
-{ 
-  NORMAL, 
-  PEST, 
+typedef enum
+{
+  NORMAL,
+  PEST,
   BUFF,
+  ENEMY_TYPE_COUNT,
 } enemy_type;
 
 typedef enum
-{ 
-  LINEAR, 
-  CIRCULAR, 
+{
+  LINEAR,
+  CIRCULAR,
   INFINITE,
 } enemy_fly_pattern;
 
@@ -24,34 +26,59 @@ typedef enum
   CENTER,
   BOTTOM_LEFT,
   BOTTOM_RIGHT,
+} fly_position;
 
-}fly_position;
-
-
-typedef struct 
+typedef struct
 {
-  Vector2 center;
+  float speed;
+  float distance;
+  float angle;
+} LinearConfig;
+
+typedef struct
+{
   float radius;
   float angular_speed;
-  float angle;
-}circular_data;
+} CircularConfig;
+
+typedef struct
+{
+  float radius;
+  float speed;
+} InfiniteConfig;
+
+typedef struct
+{
+  LinearConfig   linear;
+  CircularConfig circular;
+  InfiniteConfig infinite;
+} EnemyConfig;
 
 typedef struct
 {
   Vector2 start;
   Vector2 end;
+  Vector2 direction;
   float speed;
   float distance;
-  Vector2 direction;
-}linear_fly_pattern_data;
+  float traveled;
+} linear_data;
 
 typedef struct
 {
   Vector2 center;
-  float radius; //also offset from center to the center of each circle
+  float radius;
+  float angular_speed;
+  float angle;
+} circular_data;
+
+typedef struct
+{
+  Vector2 center;
+  float radius;
   float time_parameter;
   float speed;
-}infinite_fly_pattern_data;
+} infinite_data;
 
 typedef struct Enemy
 {
@@ -64,12 +91,12 @@ typedef struct Enemy
   bool alive;
 
   fly_position spawn_position;
-
   enemy_type type;
   enemy_fly_pattern fly_pattern;
-  circular_data circular_data;
-  linear_fly_pattern_data linear_data;
-  infinite_fly_pattern_data infinite_data;
+
+  linear_data linear;
+  circular_data circular;
+  infinite_data infinite;
 } Enemy;
 
 void update_enemy(Enemy *enemy, float deltaTime);

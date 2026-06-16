@@ -9,7 +9,7 @@ void init_ball(Ball *ball, float x, float y)
   ball->scale = BALL_SCALE;
   ball->texture_pos = (Vector2){ ball->center_pos.x - (ball->texture.width * ball->scale / 2), ball->center_pos.y - (ball->texture.height * ball->scale / 2) };
   ball->rotation = 0.0f;
-  ball->speed = (Vector2){ .x = BALL_INITIAL_SPEED_X, .y = 0 };
+  ball->speed = (Vector2){ .x = BALL_INITIAL_SPEED_X, .y = BALL_INITIAL_SPEED_Y };
   ball->radius = ball->texture.width * ball->scale / 2;
 }
 
@@ -42,7 +42,7 @@ void update_ball(Ball *ball, Player *player, float deltaTime)
     ball->speed.y *= -BALL_BOUNCE_MULTIPLIER;
   }
 
-  ball->speed.y += GRAVITY;
+  //ball->speed.y += GRAVITY;
   
   if (ball->speed.x  > MAX_SPEED) ball->speed.x = MAX_SPEED ;
   if (ball->speed.x  < -MAX_SPEED) ball->speed.x = -MAX_SPEED; 

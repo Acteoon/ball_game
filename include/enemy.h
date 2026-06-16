@@ -3,13 +3,14 @@
 
 #include "raylib.h"
 #include <stdbool.h>
+#include "ball.h"
 
 typedef enum
 {
   NORMAL,
   PEST,
   BUFF,
-  ENEMY_TYPE_COUNT,
+  ENEMY_TYPE_COUNT
 } enemy_type;
 
 typedef enum
@@ -99,7 +100,7 @@ typedef struct Enemy
   infinite_data infinite;
 } Enemy;
 
-void update_enemy(Enemy *enemy, float deltaTime);
+void update_enemy(Enemy *enemy, float deltaTime, Ball *ball);
 void init_enemy(Enemy *enemy, fly_position spawn_position, enemy_type type, enemy_fly_pattern fly_pattern);
 
 #endif

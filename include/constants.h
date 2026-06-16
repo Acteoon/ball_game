@@ -16,12 +16,15 @@
 
 #define BALL_SCALE              4.0f
 #define BALL_INITIAL_SPEED_X    350
-#define BALL_BOUNCE_MULTIPLIER  1.1f
+#define BALL_INITIAL_SPEED_Y    800
+#define BALL_BOUNCE_MULTIPLIER  1.0f
 
-#define ENEMY_SCALE  3.0f
+#define ENEMY_SCALE_NORMAL  6.0f
+#define ENEMY_SCALE_PEST    3.0f
+#define ENEMY_SCALE_BUFF    7.0f
 
-#define GRAVITY    15
-#define MAX_SPEED  500
+#define GRAVITY    7
+#define MAX_SPEED  1000
 
 static const Vector2 TOP_LEFT_SPAWN     = { 100.0f, 100.0f };
 static const Vector2 TOP_RIGHT_SPAWN    = { (float)(SCREEN_WIDTH - 100), 100.0f };
@@ -31,19 +34,19 @@ static const Vector2 CENTER_SPAWN       = { (float)(SCREEN_WIDTH/2), (float)(SCR
 
 static const EnemyConfig ENEMY_CONFIGS[ENEMY_TYPE_COUNT] = {
   [NORMAL] = {
-    .linear   = { .speed = 100.0f, .distance = 100.0f, .angle = 0.0f },
+    .linear   = { .speed = 100.0f, .distance = 200.0f, .angle = 0.0f },
     .circular = { .radius = 50.0f, .angular_speed = 1.0f },
     .infinite = { .radius = 50.0f, .speed = 1.0f },
   },
   [PEST] = {
     .linear   = { .speed = 150.0f, .distance = 150.0f, .angle = 0.0f },
     .circular = { .radius = 70.0f, .angular_speed = 1.5f },
-    .infinite = { .radius = 70.0f, .speed = 1.5f },
+    .infinite = { .radius = 70.0f, .speed = 2.0f },
   },
   [BUFF] = {
     .linear   = { .speed = 80.0f,  .distance = 50.0f,  .angle = 0.0f },
     .circular = { .radius = 30.0f, .angular_speed = 0.5f },
-    .infinite = { .radius = 30.0f, .speed = 0.5f },
+    .infinite = { .radius = 30.0f, .speed = 0.7f },
   },
 };
 

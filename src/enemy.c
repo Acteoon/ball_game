@@ -2,8 +2,11 @@
 #include "constants.h"
 #include <math.h>
 
-void update_enemy(Enemy *enemy, float deltaTime)
+void update_enemy(Enemy *enemy, float deltaTime, Ball *ball)
 {
+  if (!enemy->alive)
+    return;
+  
   if (enemy->fly_pattern == LINEAR)
   {
     float step = enemy->linear.speed * deltaTime;
@@ -38,6 +41,11 @@ void update_enemy(Enemy *enemy, float deltaTime)
 
     enemy->center_pos.x = enemy->infinite.center.x + radius_x * cosf(enemy->infinite.time_parameter);
     enemy->center_pos.y = enemy->infinite.center.y + radius_y * sinf(enemy->infinite.time_parameter);
+  }
+
+  if (CheckCollisionCircleRec(ball->center_pos, ball->radius, enemy->collision))
+  {
+    enemy->alive = false;
   }
 
   enemy->texture_pos.x = enemy->center_pos.x - (enemy->texture.width * enemy->scale / 2);
@@ -106,7 +114,21 @@ void init_enemy(Enemy *enemy, fly_position spawn_position, enemy_type type, enem
     }
   }
 
-  enemy->scale = ENEMY_SCALE;
+  switch (type)
+  {
+    case NORMAL:
+      enemy->scale = ENEMY_SCALE_NORMAL;
+      break;
+    case PEST:
+      enemy->scale = ENEMY_SCALE_PEST;
+      break;
+    case BUFF:
+      enemy->scale = ENEMY_SCALE_BUFF;
+      break;
+    case ENEMY_TYPE_COUNT:
+      enemy->scale = ENEMY_SCALE_NORMAL;
+      break;
+  }
   enemy->rotation = 0.0f;
   enemy->texture_pos.x = enemy->center_pos.x - (enemy->texture.width * enemy->scale / 2);
   enemy->texture_pos.y = enemy->center_pos.y - (enemy->texture.height * enemy->scale / 2);

@@ -30,7 +30,10 @@ int main(void)
   } 
   */ 
 
-  init_enemy(&enemy[0], CENTER, NORMAL, LINEAR);
+  init_enemy(&enemy[0], CENTER, PEST, LINEAR);
+  init_enemy(&enemy[1], TOP_LEFT, PEST, CIRCULAR);
+  init_enemy(&enemy[2], TOP_RIGHT, NORMAL, INFINITE);
+  init_enemy(&enemy[3], CENTER, BUFF, CIRCULAR);
 
 
   SetTargetFPS(FPS);
@@ -46,14 +49,15 @@ int main(void)
     update_ball(&ball, &player, deltaTime);
     for (int i = 0; i < ENEMY_COUNT; i++)
     {
-      update_enemy(&enemy[i], deltaTime);
+      update_enemy(&enemy[i], deltaTime, &ball);
     }
 
     DrawTextureEx(player.texture, player.texture_pos, player.rotation, player.scale, WHITE);
     DrawTextureEx(ball.texture, ball.texture_pos, ball.rotation, ball.scale, WHITE);
     for (int i = 0; i < ENEMY_COUNT; i++)
     {
-      DrawTextureEx(enemy[i].texture, enemy[i].texture_pos, enemy[i].rotation, enemy[i].scale, WHITE);
+      if (enemy[i].alive)
+        DrawTextureEx(enemy[i].texture, enemy[i].texture_pos, enemy[i].rotation, enemy[i].scale, WHITE);
     }
     
     DrawRectangleLines(player.collision.x, player.collision.y, player.collision.width, player.collision.height, RED);
@@ -64,7 +68,8 @@ int main(void)
   UnloadTexture(ball.texture);
   for (int i = 0; i < ENEMY_COUNT; i++) 
   {
-    UnloadTexture(enemy[i].texture);
+    if (enemy[i].alive)
+      UnloadTexture(enemy[i].texture);
   }
   CloseWindow();
 

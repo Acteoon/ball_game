@@ -36,10 +36,11 @@ void update_ball(Ball *ball, Player *player, float deltaTime)
     ball->speed.y *= -BALL_BOUNCE_MULTIPLIER;
   }
 
-  if (CheckCollisionCircleRec((Vector2){ ball->center_pos.x, ball->center_pos.y }, ball->radius, player->collision)) 
+  if (CheckCollisionCircleRec(ball->center_pos, ball->radius, player->collision)) 
   {
     ball->center_pos.y = player->collision.y - ball->radius;
     ball->speed.y *= -BALL_BOUNCE_MULTIPLIER;
+    ball->speed.x += (ball->center_pos.x - player->center_pos.x) * BALL_PADDLE_SPEED_MULTIPLIER;
   }
 
   //ball->speed.y += GRAVITY;

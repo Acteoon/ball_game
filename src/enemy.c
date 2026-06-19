@@ -64,7 +64,6 @@ void init_enemy(Enemy *enemy, fly_position spawn_position, enemy_type type, enem
   enemy->fly_pattern = fly_pattern;
   enemy->spawn_position = spawn_position;
   enemy->alive = true;
-  enemy->texture = LoadTexture("assets/enemy.png");
 
   switch (spawn_position)
   {
@@ -118,12 +117,15 @@ void init_enemy(Enemy *enemy, fly_position spawn_position, enemy_type type, enem
   {
     case NORMAL:
       enemy->scale = ENEMY_SCALE_NORMAL;
+      enemy->texture = LoadTexture("assets/enemy.png");
       break;
     case PEST:
       enemy->scale = ENEMY_SCALE_PEST;
+      enemy->texture = LoadTexture("assets/enemy.png");
       break;
     case BUFF:
       enemy->scale = ENEMY_SCALE_BUFF;
+      enemy->texture = LoadTexture("assets/enemy_evo.png");
       break;
     case ENEMY_TYPE_COUNT:
       enemy->scale = ENEMY_SCALE_NORMAL;

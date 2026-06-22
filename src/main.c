@@ -110,7 +110,7 @@ int main(void)
     DrawCircleLines(ball.texture_pos.x + ball.radius, ball.texture_pos.y + ball.radius, ball.radius, RED);
     EndDrawing();
 
-    if (lives < 0)
+    if (lives <= 0)
       break;
   }
   UnloadTexture(player_texture);

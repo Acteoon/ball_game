@@ -2,9 +2,9 @@
 #include "player.h"
 #include "constants.h"
 
-void init_ball(Ball *ball, float x, float y)
+void init_ball(Ball *ball, float x, float y, Texture2D *texture)
 {
-  ball->texture = LoadTexture("assets/ball.png");
+  ball->texture = *texture;
   ball->center_pos = (Vector2){ .x = x, .y = y };
   ball->scale = BALL_SCALE;
   ball->texture_pos = (Vector2){ ball->center_pos.x - (ball->texture.width * ball->scale / 2), ball->center_pos.y - (ball->texture.height * ball->scale / 2) };

@@ -2,6 +2,8 @@
 #define ENEMY_H
 
 #include "raylib.h"
+#include "projectile.h"
+#include "modifier.h"
 #include <stdbool.h>
 #include "ball.h"
 
@@ -81,6 +83,16 @@ typedef struct
   float speed;
 } infinite_data;
 
+typedef struct
+{
+  Vector2 position;
+  Vector2 direction;
+  float speed;
+  float scale;
+  float fire_rate;
+  float time_since_last_shot;
+} projectile_data;
+
 typedef struct Enemy
 {
   Texture texture;
@@ -98,9 +110,12 @@ typedef struct Enemy
   linear_data linear;
   circular_data circular;
   infinite_data infinite;
+
+  projectile_data projectile;
+
 } Enemy;
 
-void update_enemy(Enemy *enemy, float deltaTime, Ball *ball);
-void init_enemy(Enemy *enemy, fly_position spawn_position, enemy_type type, enemy_fly_pattern fly_pattern);
+void update_enemy(Enemy *enemy, float deltaTime, Ball *ball, EnemyModifiers *modifiers, Projectile *projectiles, Texture2D *projectile_texture);
+void init_enemy(Enemy *enemy, fly_position spawn_position, enemy_type type, enemy_fly_pattern fly_pattern, Texture2D *textures);
 
 #endif

@@ -16,7 +16,7 @@ typedef struct Ball
   Vector2 speed;
 } Ball;
 
-void init_ball(Ball *ball, float x, float y);
+void init_ball(Ball *ball, float x, float y, Texture2D *texture);
 void update_ball(Ball *ball, Player *player, float deltaTime);
 
 #endif

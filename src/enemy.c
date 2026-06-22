@@ -1,15 +1,24 @@
 #include "enemy.h"
 #include "constants.h"
+#include "modifier.h"
+#include "projectile.h"
 #include <math.h>
 
-void update_enemy(Enemy *enemy, float deltaTime, Ball *ball)
+void update_enemy(Enemy *enemy, float deltaTime, Ball *ball, EnemyModifiers *modifiers, Projectile *projectiles, Texture2D *projectile_texture)
 {
+  int i;
+  if (enemy->alive && CheckCollisionCircleRec(ball->center_pos, ball->radius, enemy->collision))
+  {
+    enemy->alive = false;
+  }
+
+
   if (!enemy->alive)
     return;
   
   if (enemy->fly_pattern == LINEAR)
   {
-    float step = enemy->linear.speed * deltaTime;
+    float step = enemy->linear.speed * deltaTime * modifiers[enemy->type].linear.speed;
     enemy->center_pos.x += enemy->linear.direction.x * step;
     enemy->center_pos.y += enemy->linear.direction.y * step;
     enemy->linear.traveled += step;
@@ -23,30 +32,26 @@ void update_enemy(Enemy *enemy, float deltaTime, Ball *ball)
   }
   else if (enemy->fly_pattern == CIRCULAR)
   {
-    enemy->circular.angle += enemy->circular.angular_speed * deltaTime;
-    enemy->center_pos.x = enemy->circular.center.x + cosf(enemy->circular.angle) * enemy->circular.radius;
-    enemy->center_pos.y = enemy->circular.center.y + sinf(enemy->circular.angle) * enemy->circular.radius;
+    enemy->circular.angle += enemy->circular.angular_speed * deltaTime * modifiers[enemy->type].circular.angular_speed;
+    enemy->center_pos.x = enemy->circular.center.x + cosf(enemy->circular.angle) * (enemy->circular.radius * modifiers[enemy->type].circular.radius);
+    enemy->center_pos.y = enemy->circular.center.y + sinf(enemy->circular.angle) * (enemy->circular.radius * modifiers[enemy->type].circular.radius);
   }
   else if (enemy->fly_pattern == INFINITE)
   {
     float radius_x = enemy->infinite.radius;
     float radius_y = enemy->infinite.radius / 2.0f;
 
-    enemy->infinite.time_parameter += enemy->infinite.speed * deltaTime;
+    enemy->infinite.time_parameter += enemy->infinite.speed * deltaTime * modifiers[enemy->type].infinite.speed;
 
     if (enemy->infinite.time_parameter >= TWO_PI)
       enemy->infinite.time_parameter -= TWO_PI;
     else if (enemy->infinite.time_parameter < 0)
       enemy->infinite.time_parameter += TWO_PI;
 
-    enemy->center_pos.x = enemy->infinite.center.x + radius_x * cosf(enemy->infinite.time_parameter);
+    enemy->center_pos.x = enemy->infinite.center.x + ( modifiers[enemy->type].infinite.radius * radius_x ) * cosf(enemy->infinite.time_parameter);
     enemy->center_pos.y = enemy->infinite.center.y + radius_y * sinf(enemy->infinite.time_parameter);
   }
 
-  if (CheckCollisionCircleRec(ball->center_pos, ball->radius, enemy->collision))
-  {
-    enemy->alive = false;
-  }
 
   enemy->texture_pos.x = enemy->center_pos.x - (enemy->texture.width * enemy->scale / 2);
   enemy->texture_pos.y = enemy->center_pos.y - (enemy->texture.height * enemy->scale / 2);
@@ -56,9 +61,23 @@ void update_enemy(Enemy *enemy, float deltaTime, Ball *ball)
     .width = enemy->texture.width * enemy->scale,
     .height = enemy->texture.height * enemy->scale,
   };
+
+  enemy->projectile.time_since_last_shot += GetFrameTime();
+  if(enemy->projectile.time_since_last_shot > enemy->projectile.fire_rate)
+  {
+    for (i = 0; i < NUM_PROJECTILES; i++) 
+    {
+      if (!projectiles[i].active) 
+      {
+        init_projectile(&projectiles[i], enemy, projectile_texture);
+        break;  // Stop after initializing the first inactive one
+      }
+    }
+    enemy->projectile.time_since_last_shot = 0.0f;
+  }
 }
 
-void init_enemy(Enemy *enemy, fly_position spawn_position, enemy_type type, enemy_fly_pattern fly_pattern)
+void init_enemy(Enemy *enemy, fly_position spawn_position, enemy_type type, enemy_fly_pattern fly_pattern, Texture2D *textures)
 {
   enemy->type = type;
   enemy->fly_pattern = fly_pattern;
@@ -117,20 +136,31 @@ void init_enemy(Enemy *enemy, fly_position spawn_position, enemy_type type, enem
   {
     case NORMAL:
       enemy->scale = ENEMY_SCALE_NORMAL;
-      enemy->texture = LoadTexture("assets/enemy.png");
+      enemy->texture = textures[NORMAL];
+      enemy->projectile.fire_rate = ENEMY_FIRERATE_NORMAL;
+      enemy->projectile.speed = ENEMY_PROJECTILE_SPEED_NORMAL;
+      enemy->projectile.scale = ENEMY_PROJECTILE_SCALE_NORMAL;
       break;
     case PEST:
       enemy->scale = ENEMY_SCALE_PEST;
-      enemy->texture = LoadTexture("assets/enemy.png");
+      enemy->texture = textures[PEST];
+      enemy->projectile.fire_rate = ENEMY_FIRERATE_PEST;
+      enemy->projectile.speed = ENEMY_PROJECTILE_SPEED_PEST;
+      enemy->projectile.scale = ENEMY_PROJECTILE_SCALE_PEST;
       break;
     case BUFF:
       enemy->scale = ENEMY_SCALE_BUFF;
-      enemy->texture = LoadTexture("assets/enemy_evo.png");
+      enemy->texture = textures[BUFF];
+      enemy->projectile.fire_rate = ENEMY_FIRERATE_BUFF;
+      enemy->projectile.speed = ENEMY_PROJECTILE_SPEED_BUFF;
+      enemy->projectile.scale = ENEMY_PROJECTILE_SCALE_BUFF;
       break;
     case ENEMY_TYPE_COUNT:
       enemy->scale = ENEMY_SCALE_NORMAL;
       break;
   }
+  enemy->projectile.direction = (Vector2){ 0.0f, 1.0f };
+
   enemy->rotation = 0.0f;
   enemy->texture_pos.x = enemy->center_pos.x - (enemy->texture.width * enemy->scale / 2);
   enemy->texture_pos.y = enemy->center_pos.y - (enemy->texture.height * enemy->scale / 2);

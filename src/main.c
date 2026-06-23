@@ -15,7 +15,7 @@ int main(void)
 
   Texture2D player_texture = LoadTexture("assets/player.png");
   Texture2D enemy_normal_texture = LoadTexture("assets/enemy.png");
-  Texture2D enemy_pest_texture = LoadTexture("assets/enemy.png");
+  Texture2D enemy_pest_texture = LoadTexture("assets/enemy_pest.png");
   Texture2D enemy_buff_texture = LoadTexture("assets/enemy_evo.png");
   Texture2D ball_texture = LoadTexture("assets/ball.png");
   Texture2D projectile_texture = LoadTexture("assets/enemy_projectile.png");

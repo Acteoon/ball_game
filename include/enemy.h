@@ -5,7 +5,7 @@
 #include "projectile.h"
 #include "modifier.h"
 #include <stdbool.h>
-#include "ball.h"
+typedef struct Ball Ball;
 
 typedef enum
 {

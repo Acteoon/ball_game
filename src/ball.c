@@ -1,6 +1,7 @@
 #include "ball.h"
 #include "player.h"
 #include "constants.h"
+#include "heart.h"
 
 void init_ball(Ball *ball, float x, float y, Texture2D *texture)
 {
@@ -13,12 +14,14 @@ void init_ball(Ball *ball, float x, float y, Texture2D *texture)
   ball->radius = ball->texture.width * ball->scale / 2;
 }
 
-void update_ball(Ball *ball, Player *player, float deltaTime)
+void update_ball(Ball *ball, Player *player, float deltaTime, Health_bar *health_bar)
 {
   if (ball->center_pos.y + ball->radius >= SCREEN_HEIGHT) 
   {
     ball->center_pos.y = SCREEN_HEIGHT - ball->radius;
     ball->speed.y *= -BALL_BOUNCE_MULTIPLIER;
+    health_bar->lives--;
+
   }
   if (ball->center_pos.x + ball->radius >= SCREEN_WIDTH) 
   {

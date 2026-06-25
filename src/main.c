@@ -95,7 +95,7 @@ int main(void)
     ClearBackground(SKYBLUE);
 
     update_player(&player, deltaTime);
-    update_ball(&ball, &player, deltaTime);
+    update_ball(&ball, &player, deltaTime, &health_bar);
     for (i = 0; i < ENEMY_COUNT; i++)
     {
       update_enemy(&enemy[i], deltaTime, &ball, enemy_modifiers, projectiles, &projectile_texture);

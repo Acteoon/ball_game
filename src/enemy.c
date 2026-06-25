@@ -1,4 +1,5 @@
 #include "enemy.h"
+#include "ball.h"
 #include "constants.h"
 #include "modifier.h"
 #include "projectile.h"

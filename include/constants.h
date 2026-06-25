@@ -24,7 +24,7 @@
 #define MAX_SPEED  1000
 
 #define ENEMY_SCALE_NORMAL  6.0f
-#define ENEMY_SCALE_PEST    5.0f
+#define ENEMY_SCALE_PEST    4.0f
 #define ENEMY_SCALE_BUFF    7.0f
 #define ENEMY_FIRERATE_NORMAL 10.0f
 #define ENEMY_FIRERATE_PEST 5.0f

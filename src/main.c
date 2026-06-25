@@ -75,11 +75,11 @@ int main(void)
   Health_bar health_bar = {
     .full_heart = &full_heart,
     .empty_heart = &empty_heart,
-    .lives = 3,
-    .hearts = 5,
-    .scale = 4.0f,
-    .max_collums = 10,
-    .max_height = 200.0f,
+    .lives = BASE_HEALTH,
+    .hearts = BASE_HEALTH,
+    .scale = HEARTS_BASE_SCALE,
+    .max_collums = HEARTS_BASE_MAX_COLLUMS,
+    .max_height = HEARTS_BASE_MAX_HEIGHT,
     .start = { 10.0f, 10.0f }
   };
 

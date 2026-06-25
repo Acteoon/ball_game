@@ -9,6 +9,11 @@
 #define FPS            60
 #define ENEMY_COUNT    60
 
+#define BASE_HEALTH 3
+#define HEARTS_BASE_SCALE 4.0f
+#define HEARTS_BASE_MAX_COLLUMS 10
+#define HEARTS_BASE_MAX_HEIGHT 200.0f
+
 #define TWO_PI  6.28318530718f
 
 #define PLAYER_SCALE          7.0f

@@ -1,10 +1,11 @@
 #include "projectile.h"
 #include "player.h"
 #include "enemy.h"
+#include "heart.h"
 #include "constants.h"
 #include <math.h>
 
-void update_projectile(Projectile *projectile, float deltaTime, Player *player, int *lives)
+void update_projectile(Projectile *projectile, float deltaTime, Player *player, Health_bar *health_bar)
 {
   if (!projectile->active)
     return;
@@ -30,7 +31,7 @@ void update_projectile(Projectile *projectile, float deltaTime, Player *player, 
 
   if (projectile->center_pos.y + (projectile->collision.height * 0.5f) >= SCREEN_HEIGHT)
   {
-    (*lives)--;
+    health_bar->lives--;
     projectile->active = false;
   }
 

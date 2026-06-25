@@ -4,6 +4,8 @@
 #include "raylib.h"
 #include <stdbool.h>
 
+typedef struct Health_bar Health_bar;
+
 typedef struct Player Player;
 typedef struct Enemy Enemy;
 
@@ -20,7 +22,7 @@ typedef struct Projectile
   bool active;
 }Projectile;
 
-void update_projectile(Projectile *projectile, float deltaTime, Player *player, int *lives);
+void update_projectile(Projectile *projectile, float deltaTime, Player *player, Health_bar *health_bar);
 void init_projectile(Projectile *projectile, Enemy *enemy, Texture2D *texture);
 
 

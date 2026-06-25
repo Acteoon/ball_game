@@ -5,12 +5,12 @@
 #include "enemy.h"
 #include "modifier.h"
 #include "projectile.h"
+#include "heart.h"
 
 int main(void) 
 {
   float deltaTime;
   int i;
-  int lives = 3;
   InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Ball_Game");
 
   Texture2D player_texture = LoadTexture("assets/player.png");
@@ -19,6 +19,8 @@ int main(void)
   Texture2D enemy_buff_texture = LoadTexture("assets/enemy_evo.png");
   Texture2D ball_texture = LoadTexture("assets/ball.png");
   Texture2D projectile_texture = LoadTexture("assets/enemy_projectile.png");
+  Texture2D full_heart = LoadTexture("assets/full_heart.png");
+  Texture2D empty_heart = LoadTexture("assets/empty_heart.png");
   
   Player player;
   initialize_player(&player, SCREEN_WIDTH / 2, SCREEN_HEIGHT - SCREEN_HEIGHT / PLAYER_SPAWN_DIVISOR, &player_texture);
@@ -70,6 +72,17 @@ int main(void)
     }
   };
 
+  Health_bar health_bar = {
+    .full_heart = &full_heart,
+    .empty_heart = &empty_heart,
+    .lives = 3,
+    .hearts = 5,
+    .scale = 4.0f,
+    .max_collums = 10,
+    .max_height = 200.0f,
+    .start = { 10.0f, 10.0f }
+  };
+
   Projectile projectiles[NUM_PROJECTILES];
 
   SetTargetFPS(FPS);
@@ -89,7 +102,7 @@ int main(void)
     }
     for ( i = 0; i < NUM_PROJECTILES; i++)
     {
-       update_projectile(&projectiles[i], deltaTime, &player, &lives);
+       update_projectile(&projectiles[i], deltaTime, &player, &health_bar);
     }
     
 
@@ -105,12 +118,14 @@ int main(void)
       if(projectiles[i].active)
         DrawTextureEx(projectiles[i].texture, projectiles[i].texture_pos, projectiles[i].rotation, projectiles[i].scale, WHITE);
     }
+
+    Draw_health_bar(health_bar);
     
     DrawRectangleLines(player.collision.x, player.collision.y, player.collision.width, player.collision.height, RED);
     DrawCircleLines(ball.texture_pos.x + ball.radius, ball.texture_pos.y + ball.radius, ball.radius, RED);
     EndDrawing();
 
-    if (lives <= 0)
+    if (health_bar.lives <= 0)
       break;
   }
   UnloadTexture(player_texture);
@@ -119,6 +134,8 @@ int main(void)
   UnloadTexture(enemy_pest_texture);
   UnloadTexture(enemy_buff_texture);
   UnloadTexture(projectile_texture);
+  UnloadTexture(full_heart);
+  UnloadTexture(empty_heart);
 
 
   CloseWindow();

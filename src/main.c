@@ -86,6 +86,8 @@ int main(void)
   Projectile projectiles[NUM_PROJECTILES];
 
   SetTargetFPS(FPS);
+  //SetMousePosition(player.center_pos.x, player.center_pos.y);
+  HideCursor();
 
   while (!WindowShouldClose()) 
   {

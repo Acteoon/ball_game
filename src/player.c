@@ -19,4 +19,7 @@ void update_player(Player *player, float deltaTime)
   player->center_pos.x = mouse.x;
   player->texture_pos.x = player->center_pos.x - (player->texture.width * player->scale / 2);
   player->collision.x = player->center_pos.x - (player->texture.width * player->scale / 2);
+
+  if(GetMouseY() > player->center_pos.y + 40 || GetMouseY() < player->center_pos.y - 40)
+    SetMousePosition(GetMouseX(), player->center_pos.y);
 }

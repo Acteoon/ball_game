@@ -22,6 +22,7 @@ void update_projectile(Projectile *projectile, float deltaTime, Player *player, 
   if (projectile->center_pos.x - projectile->collision.width * 0.5f < 0 || projectile->center_pos.x + projectile->collision.width * 0.5f >= SCREEN_WIDTH)
   {
     projectile->direction.x = -projectile->direction.x;
+    projectile->active = false;
   }
 
   if (projectile->center_pos.y - projectile->collision.height * 0.5f < 0)

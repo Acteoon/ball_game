@@ -6,6 +6,7 @@
 #include "modifier.h"
 #include "projectile.h"
 #include "heart.h"
+#include "enemy_spawner.h"
 
 int main(void) 
 {
@@ -35,21 +36,13 @@ int main(void)
   };
 
   Enemy enemy[ENEMY_COUNT] = {0};
-  /*
-  for (int i = 0; i < ENEMY_COUNT; i++)
-  {
-    fly_position pos = (fly_position)(i % 5);
-    enemy_type type = (enemy_type)(i % 3);
-    enemy_fly_pattern pattern = (enemy_fly_pattern)(i % 3);
-    init_enemy(&enemy[i], pos, type, pattern, enemy_textures);
-  } 
-  */ 
 
+  /*
   init_enemy(&enemy[0], CENTER, PEST, LINEAR, enemy_textures);
   init_enemy(&enemy[1], TOP_LEFT, PEST, CIRCULAR, enemy_textures);
   init_enemy(&enemy[2], TOP_RIGHT, NORMAL, INFINITE, enemy_textures);
   init_enemy(&enemy[3], CENTER, BUFF, CIRCULAR, enemy_textures);
-
+  */
 
   EnemyModifiers enemy_modifiers[3] = {
     [NORMAL] = {
@@ -84,6 +77,7 @@ int main(void)
   };
 
   Projectile projectiles[NUM_PROJECTILES];
+  Enemy_spawner enemy_spawner = {.time = 0, .time_for_next_spawn = 0};
 
   SetTargetFPS(FPS);
   //SetMousePosition(player.center_pos.x, player.center_pos.y);
@@ -92,10 +86,11 @@ int main(void)
   while (!WindowShouldClose()) 
   {
     deltaTime = GetFrameTime();
-
+    SetRandomSeed((int)(GetTime() * 3));
+    spawn_enemys(enemy, &enemy_spawner, enemy_textures);
     BeginDrawing();
     ClearBackground(SKYBLUE);
-
+    
     update_player(&player, deltaTime);
     update_ball(&ball, &player, deltaTime, &health_bar);
     for (i = 0; i < ENEMY_COUNT; i++)

@@ -36,5 +36,6 @@ typedef struct
 }EnemyModifiers;
 
 
+void init_enemy_modifiers(EnemyModifiers enemy_modifiers[]);
 
 #endif

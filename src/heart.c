@@ -3,6 +3,22 @@
 #include "stdlib.h"
 #include "math.h"
 
+Health_bar init_health_bar(Texture2D *full_heart, Texture2D *empty_heart)
+{
+    Health_bar health_bar = {
+    .full_heart = full_heart,
+    .empty_heart = empty_heart,
+    .lives = BASE_HEALTH,
+    .hearts = BASE_HEALTH,
+    .scale = HEARTS_BASE_SCALE,
+    .max_collums = HEARTS_BASE_MAX_COLLUMS,
+    .max_height = HEARTS_BASE_MAX_HEIGHT,
+    .start = { 10.0f, 10.0f }
+  };
+
+  return health_bar;
+}
+
 void Draw_health_bar(Health_bar health_bar)
 {
     float start_x = health_bar.start.x;

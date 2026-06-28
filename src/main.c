@@ -40,37 +40,10 @@ int main(void)
 
   Enemy enemy[ENEMY_COUNT] = {0};
 
-  EnemyModifiers enemy_modifiers[3] = {
-    [NORMAL] = {
-      .projectile = { .speed = 1.0f, .fire_rate = 1.0f, .radius = 1.0f },
-      .linear = { .speed = 1.0f },
-      .circular = { .angular_speed = 1.0f, .radius = 1.0f },
-      .infinite = { .speed = 1.0f, .radius = 1.0f },
-    },
-    [PEST] = {
-      .projectile = { .speed = 1.0f, .fire_rate = 1.0f, .radius = 1.0f },
-      .linear = { .speed = 1.0f },
-      .circular = { .angular_speed = 1.0f, .radius = 1.0f },
-      .infinite = { .speed = 1.0f, .radius = 1.0f },
-    },
-    [BUFF] = {
-      .projectile = { .speed = 1.0f, .fire_rate = 1.0f, .radius = 1.0f },
-      .linear = { .speed = 1.0f },
-      .circular = { .angular_speed = 1.0f, .radius = 1.0f },
-      .infinite = { .speed = 1.0f, .radius = 1.0f },
-    }
-  };  //put into modifier.c 
+  EnemyModifiers enemy_modifiers[ENEMY_TYPE_COUNT];
+  init_enemy_modifiers(enemy_modifiers);
 
-  Health_bar health_bar = {
-    .full_heart = &full_heart,
-    .empty_heart = &empty_heart,
-    .lives = BASE_HEALTH,
-    .hearts = BASE_HEALTH,
-    .scale = HEARTS_BASE_SCALE,
-    .max_collums = HEARTS_BASE_MAX_COLLUMS,
-    .max_height = HEARTS_BASE_MAX_HEIGHT,
-    .start = { 10.0f, 10.0f }
-  }; //put into heart.c
+  Health_bar health_bar = init_health_bar(&full_heart, &empty_heart);
 
   Projectile projectiles[NUM_PROJECTILES];
   Enemy_spawner enemy_spawner = {.time = 0, .time_for_next_spawn = 0};

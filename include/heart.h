@@ -18,4 +18,5 @@ typedef struct Health_bar
 }Health_bar;
 
 void Draw_health_bar(Health_bar health_bar);
+Health_bar init_health_bar(Texture2D *full_heart, Texture2D *empty_heart);
 #endif

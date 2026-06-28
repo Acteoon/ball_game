@@ -7,6 +7,7 @@
 #include "projectile.h"
 #include "heart.h"
 #include "enemy_spawner.h"
+#include "xp_bar.h"
 
 int main(void) 
 {
@@ -22,6 +23,8 @@ int main(void)
   Texture2D projectile_texture = LoadTexture("assets/enemy_projectile.png");
   Texture2D full_heart = LoadTexture("assets/full_heart.png");
   Texture2D empty_heart = LoadTexture("assets/empty_heart.png");
+  Texture2D empty_bar = LoadTexture("assets/xp_bar_empty.png");
+  Texture2D bar_fluid = LoadTexture("assets/xp_bar_insides.png");
   
   Player player;
   initialize_player(&player, SCREEN_WIDTH / 2, SCREEN_HEIGHT - SCREEN_HEIGHT / PLAYER_SPAWN_DIVISOR, &player_texture);
@@ -36,13 +39,6 @@ int main(void)
   };
 
   Enemy enemy[ENEMY_COUNT] = {0};
-
-  /*
-  init_enemy(&enemy[0], CENTER, PEST, LINEAR, enemy_textures);
-  init_enemy(&enemy[1], TOP_LEFT, PEST, CIRCULAR, enemy_textures);
-  init_enemy(&enemy[2], TOP_RIGHT, NORMAL, INFINITE, enemy_textures);
-  init_enemy(&enemy[3], CENTER, BUFF, CIRCULAR, enemy_textures);
-  */
 
   EnemyModifiers enemy_modifiers[3] = {
     [NORMAL] = {
@@ -63,7 +59,7 @@ int main(void)
       .circular = { .angular_speed = 1.0f, .radius = 1.0f },
       .infinite = { .speed = 1.0f, .radius = 1.0f },
     }
-  };
+  };  //put into modifier.c 
 
   Health_bar health_bar = {
     .full_heart = &full_heart,
@@ -74,10 +70,11 @@ int main(void)
     .max_collums = HEARTS_BASE_MAX_COLLUMS,
     .max_height = HEARTS_BASE_MAX_HEIGHT,
     .start = { 10.0f, 10.0f }
-  };
+  }; //put into heart.c
 
   Projectile projectiles[NUM_PROJECTILES];
   Enemy_spawner enemy_spawner = {.time = 0, .time_for_next_spawn = 0};
+  Xp_bar xp_bar; init_xp_bar(&xp_bar, &bar_fluid, &empty_bar);
 
   SetTargetFPS(FPS);
   //SetMousePosition(player.center_pos.x, player.center_pos.y);
@@ -117,6 +114,7 @@ int main(void)
     }
 
     Draw_health_bar(health_bar);
+    draw_xp_bar(&xp_bar);
     
     DrawRectangleLines(player.collision.x, player.collision.y, player.collision.width, player.collision.height, RED);
     DrawCircleLines(ball.texture_pos.x + ball.radius, ball.texture_pos.y + ball.radius, ball.radius, RED);
@@ -133,7 +131,8 @@ int main(void)
   UnloadTexture(projectile_texture);
   UnloadTexture(full_heart);
   UnloadTexture(empty_heart);
-
+  UnloadTexture(bar_fluid);
+  UnloadTexture(empty_bar);
 
   CloseWindow();
 

@@ -3,6 +3,7 @@
 
 #include "raylib.h"
 #include "heart.h"
+#include "upgrades.h"
 
 typedef struct Player Player;
 
@@ -18,6 +19,6 @@ typedef struct Ball
 } Ball;
 
 void init_ball(Ball *ball, float x, float y, Texture2D *texture);
-void update_ball(Ball *ball, Player *player, float deltaTime, Health_bar *health_bar);
+void update_ball(Ball *ball, Player *player, float deltaTime, Health_bar *health_bar, Upgrades *upgrades);
 
 #endif

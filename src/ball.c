@@ -2,6 +2,7 @@
 #include "player.h"
 #include "constants.h"
 #include "heart.h"
+#include "upgrades.h"
 
 void init_ball(Ball *ball, float x, float y, Texture2D *texture)
 {
@@ -14,33 +15,39 @@ void init_ball(Ball *ball, float x, float y, Texture2D *texture)
   ball->radius = ball->texture.width * ball->scale / 2;
 }
 
-void update_ball(Ball *ball, Player *player, float deltaTime, Health_bar *health_bar)
+void update_ball(Ball *ball, Player *player, float deltaTime, Health_bar *health_bar, Upgrades *upgrades)
 {
   if (ball->center_pos.y + ball->radius >= SCREEN_HEIGHT) 
   {
+    //ball hit ground
     ball->center_pos.y = SCREEN_HEIGHT - ball->radius;
     ball->speed.y *= -BALL_BOUNCE_MULTIPLIER;
     health_bar->lives--;
-
+    if (upgrades->heart_on_ball_touch_ground)
+      health_bar->hearts++;
   }
   if (ball->center_pos.x + ball->radius >= SCREEN_WIDTH) 
   {
+    //ball hit right wall
     ball->center_pos.x = SCREEN_WIDTH - ball->radius;
     ball->speed.x *= -BALL_BOUNCE_MULTIPLIER;
   }
   if (ball->center_pos.x - ball->radius <= 0) 
   {
+    //ball hit left wall
     ball->center_pos.x = ball->radius;
     ball->speed.x *= -BALL_BOUNCE_MULTIPLIER;
   }
   if (ball->center_pos.y - ball->radius <= 0) 
   {
+    //ball hit celling
     ball->center_pos.y = ball->radius;
     ball->speed.y *= -BALL_BOUNCE_MULTIPLIER;
   }
 
   if (CheckCollisionCircleRec(ball->center_pos, ball->radius, player->collision)) 
   {
+    //ball hit player
     ball->center_pos.y = player->collision.y - ball->radius;
     ball->speed.y *= -BALL_BOUNCE_MULTIPLIER;
     ball->speed.x += (ball->center_pos.x - player->center_pos.x) * BALL_PADDLE_SPEED_MULTIPLIER;

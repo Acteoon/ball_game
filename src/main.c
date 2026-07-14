@@ -1,13 +1,4 @@
-#include "raylib.h"
-#include "constants.h"
-#include "player.h"
-#include "ball.h"
-#include "enemy.h"
-#include "modifier.h"
-#include "projectile.h"
-#include "heart.h"
-#include "enemy_spawner.h"
-#include "xp_bar.h"
+#include "comon.h"
 
 int main(void) 
 {
@@ -25,6 +16,15 @@ int main(void)
   Texture2D empty_heart = LoadTexture("assets/empty_heart.png");
   Texture2D empty_bar = LoadTexture("assets/xp_bar_empty.png");
   Texture2D bar_fluid = LoadTexture("assets/xp_bar_insides.png");
+
+  Upgrades upgrades = {
+    .player_move_with_mouse = false,
+    .player_kill_enemy_on_collision = false,
+    .ball_kill_projectiles = false,
+    .heart_on_ball_touch_ground = true,
+    .ball_dublicate_on_enemy = { .active = false, .chance_percentage = 0 },
+    .ball_homming = { .active = false, .quantity = 0 }
+  };
   
   Player player;
   initialize_player(&player, SCREEN_WIDTH / 2, SCREEN_HEIGHT - SCREEN_HEIGHT / PLAYER_SPAWN_DIVISOR, &player_texture);
@@ -62,7 +62,7 @@ int main(void)
     ClearBackground(SKYBLUE);
     
     update_player(&player, deltaTime);
-    update_ball(&ball, &player, deltaTime, &health_bar);
+    update_ball(&ball, &player, deltaTime, &health_bar, &upgrades);
     for (i = 0; i < ENEMY_COUNT; i++)
     {
       update_enemy(&enemy[i], deltaTime, &ball, enemy_modifiers, projectiles, &projectile_texture);
@@ -87,7 +87,7 @@ int main(void)
     }
 
     Draw_health_bar(health_bar);
-    draw_xp_bar(&xp_bar);
+    update_xp_bar(&xp_bar);
     
     DrawRectangleLines(player.collision.x, player.collision.y, player.collision.width, player.collision.height, RED);
     DrawCircleLines(ball.texture_pos.x + ball.radius, ball.texture_pos.y + ball.radius, ball.radius, RED);

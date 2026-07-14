@@ -19,7 +19,7 @@ void update_enemy(Enemy *enemy, float deltaTime, Ball *ball, EnemyModifiers *mod
   
   if (enemy->fly_pattern == LINEAR)
   {
-    float step = enemy->linear.speed * deltaTime * modifiers[enemy->type].linear.speed;
+    float step = (enemy->linear.speed + modifiers[enemy->type].linear.speed.add) * deltaTime * modifiers[enemy->type].linear.speed.multiply;
     enemy->center_pos.x += enemy->linear.direction.x * step;
     enemy->center_pos.y += enemy->linear.direction.y * step;
     enemy->linear.traveled += step;
@@ -33,24 +33,35 @@ void update_enemy(Enemy *enemy, float deltaTime, Ball *ball, EnemyModifiers *mod
   }
   else if (enemy->fly_pattern == CIRCULAR)
   {
-    enemy->circular.angle += enemy->circular.angular_speed * deltaTime * modifiers[enemy->type].circular.angular_speed;
-    enemy->center_pos.x = enemy->circular.center.x + cosf(enemy->circular.angle) * (enemy->circular.radius * modifiers[enemy->type].circular.radius);
-    enemy->center_pos.y = enemy->circular.center.y + sinf(enemy->circular.angle) * (enemy->circular.radius * modifiers[enemy->type].circular.radius);
+    float ang_speed = (enemy->circular.angular_speed + modifiers[enemy->type].circular.angular_speed.add) * modifiers[enemy->type].circular.angular_speed.multiply;
+    enemy->circular.angle += ang_speed * deltaTime;
+
+    if (enemy->circular.angle >= TWO_PI)
+      enemy->circular.angle -= TWO_PI;
+    else if (enemy->circular.angle < 0)
+      enemy->circular.angle += TWO_PI;
+
+    float radius = (enemy->circular.radius + modifiers[enemy->type].circular.radius.add) * modifiers[enemy->type].circular.radius.multiply;
+    enemy->center_pos.x = enemy->circular.center.x + cosf(enemy->circular.angle) * radius;
+    enemy->center_pos.y = enemy->circular.center.y + sinf(enemy->circular.angle) * radius;
   }
   else if (enemy->fly_pattern == INFINITE)
   {
     float radius_x = enemy->infinite.radius;
     float radius_y = enemy->infinite.radius / 2.0f;
 
-    enemy->infinite.time_parameter += enemy->infinite.speed * deltaTime * modifiers[enemy->type].infinite.speed;
+    float inf_speed = (enemy->infinite.speed + modifiers[enemy->type].infinite.speed.add) * modifiers[enemy->type].infinite.speed.multiply;
+    enemy->infinite.time_parameter += inf_speed * deltaTime;
 
     if (enemy->infinite.time_parameter >= TWO_PI)
       enemy->infinite.time_parameter -= TWO_PI;
     else if (enemy->infinite.time_parameter < 0)
       enemy->infinite.time_parameter += TWO_PI;
 
-    enemy->center_pos.x = enemy->infinite.center.x + ( modifiers[enemy->type].infinite.radius * radius_x ) * cosf(enemy->infinite.time_parameter);
-    enemy->center_pos.y = enemy->infinite.center.y + radius_y * sinf(enemy->infinite.time_parameter);
+    float radius_x_eff = (radius_x + modifiers[enemy->type].infinite.radius.add) * modifiers[enemy->type].infinite.radius.multiply;
+    float radius_y_eff = (radius_y + modifiers[enemy->type].infinite.radius.add) * modifiers[enemy->type].infinite.radius.multiply;
+    enemy->center_pos.x = enemy->infinite.center.x + radius_x_eff * cosf(enemy->infinite.time_parameter);
+    enemy->center_pos.y = enemy->infinite.center.y + radius_y_eff * sinf(enemy->infinite.time_parameter);
   }
 
 
@@ -64,13 +75,18 @@ void update_enemy(Enemy *enemy, float deltaTime, Ball *ball, EnemyModifiers *mod
   };
 
   enemy->projectile.time_since_last_shot += GetFrameTime();
-  if(enemy->projectile.time_since_last_shot > enemy->projectile.fire_rate)
+  float eff_fire_rate = (enemy->projectile.fire_rate + modifiers[enemy->type].projectile.fire_rate.add) * modifiers[enemy->type].projectile.fire_rate.multiply;
+  if(enemy->projectile.time_since_last_shot > eff_fire_rate)
   {
     for (i = 0; i < NUM_PROJECTILES; i++) 
     {
       if (!projectiles[i].active) 
       {
+        /* apply projectile speed modifier so init_projectile reads the effective speed */
+        float old_speed = enemy->projectile.speed;
+        enemy->projectile.speed = (enemy->projectile.speed + modifiers[enemy->type].projectile.speed.add) * modifiers[enemy->type].projectile.speed.multiply;
         init_projectile(&projectiles[i], enemy, projectile_texture);
+        enemy->projectile.speed = old_speed;
         break;  // Stop after initializing the first inactive one
       }
     }

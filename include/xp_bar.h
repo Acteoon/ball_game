@@ -7,8 +7,8 @@
 typedef struct
 {
     int percentage;
-    int current_xp;
-    int xp_to_next_level;
+    float current_xp;
+    float xp_to_next_level;
     int level;
     Vector2 center_pos;
     Vector2 texture_pos;
@@ -20,5 +20,5 @@ typedef struct
  
 
 void init_xp_bar(Xp_bar *xp_bar, Texture2D * bar_fluid, Texture2D * empty_bar);
-void draw_xp_bar(Xp_bar *xp_bar);
+void update_xp_bar(Xp_bar *xp_bar);
 #endif

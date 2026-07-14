@@ -6,23 +6,68 @@
 void init_enemy_modifiers(EnemyModifiers enemy_modifiers[])
 {
     enemy_modifiers[NORMAL] = (EnemyModifiers){
-        .projectile = { .speed = 1.0f, .fire_rate = 1.0f, .radius = 1.0f },
-        .linear     = { .speed = 1.0f },
-        .circular   = { .angular_speed = 1.0f, .radius = 1.0f },
-        .infinite   = { .speed = 1.0f, .radius = 1.0f },
+        .projectile = {
+            .speed     = { .add = 0.0f, .multiply = 1.0f },
+            .fire_rate = { .add = 0.0f, .multiply = 1.0f },
+            .radius    = { .add = 0.0f, .multiply = 1.0f },
+        },
+        .linear     = { .speed = { .add = 0.0f, .multiply = 1.0f } },
+        .circular   = {
+            .angular_speed = { .add = 0.0f, .multiply = 1.0f },
+            .radius        = { .add = 0.0f, .multiply = 1.0f },
+        },
+        .infinite   = {
+            .speed  = { .add = 0.0f, .multiply = 1.0f },
+            .radius = { .add = 0.0f, .multiply = 1.0f },
+        },
     };
 
     enemy_modifiers[PEST] = (EnemyModifiers){
-        .projectile = { .speed = 1.0f, .fire_rate = 1.0f, .radius = 1.0f },
-        .linear     = { .speed = 1.0f },
-        .circular   = { .angular_speed = 1.0f, .radius = 1.0f },
-        .infinite   = { .speed = 1.0f, .radius = 1.0f },
+        .projectile = {
+            .speed     = { .add = 0.0f, .multiply = 1.0f },
+            .fire_rate = { .add = 0.0f, .multiply = 1.0f },
+            .radius    = { .add = 0.0f, .multiply = 1.0f },
+        },
+        .linear     = { .speed = { .add = 0.0f, .multiply = 1.0f } },
+        .circular   = {
+            .angular_speed = { .add = 0.0f, .multiply = 1.0f },
+            .radius        = { .add = 0.0f, .multiply = 1.0f },
+        },
+        .infinite   = {
+            .speed  = { .add = 0.0f, .multiply = 1.0f },
+            .radius = { .add = 0.0f, .multiply = 1.0f },
+        },
     };
 
     enemy_modifiers[BUFF] = (EnemyModifiers){
-        .projectile = { .speed = 1.0f, .fire_rate = 1.0f, .radius = 1.0f },
-        .linear     = { .speed = 1.0f },
-        .circular   = { .angular_speed = 1.0f, .radius = 1.0f },
-        .infinite   = { .speed = 1.0f, .radius = 1.0f },
+        .projectile = {
+            .speed     = { .add = 0.0f, .multiply = 1.0f },
+            .fire_rate = { .add = 0.0f, .multiply = 1.0f },
+            .radius    = { .add = 0.0f, .multiply = 1.0f },
+        },
+        .linear     = { .speed = { .add = 0.0f, .multiply = 1.0f } },
+        .circular   = {
+            .angular_speed = { .add = 0.0f, .multiply = 1.0f },
+            .radius        = { .add = 0.0f, .multiply = 1.0f },
+        },
+        .infinite   = {
+            .speed  = { .add = 0.0f, .multiply = 1.0f },
+            .radius = { .add = 0.0f, .multiply = 1.0f },
+        },
     };
+}
+
+void init_player_modifiers(PlayerModifiers player_modifiers)
+{
+    player_modifiers.scale = (modifier){ .add = 0.0f, .multiply = 1.0f };
+    player_modifiers.rotation = (modifier){ .add = 0.0f, .multiply = 1.0f };
+    player_modifiers.speed = (modifier){ .add = 0.0f, .multiply = 1.0f };
+}
+
+void init_ball_modifiers(BallModifiers ball_modifiers)
+{
+    ball_modifiers.speed = (modifier){ .add = 0.0f, .multiply = 1.0f };
+    ball_modifiers.radius = (modifier){ .add = 0.0f, .multiply = 1.0f };
+    ball_modifiers.max_speed = (modifier){ .add = 0.0f, .multiply = 1.0f };
+    ball_modifiers.min_speed = (modifier){ .add = 0.0f, .multiply = 1.0f };
 }

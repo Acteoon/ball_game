@@ -41,15 +41,19 @@
 #define ENEMY_PROJECTILE_SCALE_PEST 2.7f
 #define ENEMY_PROJECTILE_SCALE_BUFF 4.0f
 
+#define ENEMY_XP_NORMAL 10
+#define ENEMY_XP_PEST 10
+#define ENEMY_XP_BUFF 10
+
 #define ENEMY_SPAWN_TIME_MIN 600
 #define ENEMY_SPAWN_TIME_MAX 800
 
 #define NUM_PROJECTILES 100
 
-static const Vector2 TOP_LEFT_SPAWN     = { 100.0f, 100.0f };
-static const Vector2 TOP_RIGHT_SPAWN    = { (float)(SCREEN_WIDTH - 100), 100.0f };
-static const Vector2 BOTTOM_LEFT_SPAWN  = { 100.0f, (float)(SCREEN_HEIGHT/2) };
-static const Vector2 BOTTOM_RIGHT_SPAWN = { (float)(SCREEN_WIDTH - 100), (float)(SCREEN_HEIGHT/2) };
+static const Vector2 TOP_LEFT_SPAWN     = { (float)(SCREEN_WIDTH/5) , (float)(SCREEN_HEIGHT/5) };
+static const Vector2 TOP_RIGHT_SPAWN    = { (float)(SCREEN_WIDTH/5*4), (float)(SCREEN_HEIGHT/5) };
+static const Vector2 BOTTOM_LEFT_SPAWN  = { (float)(SCREEN_WIDTH/5), (float)(SCREEN_HEIGHT/3) };
+static const Vector2 BOTTOM_RIGHT_SPAWN = { (float)(SCREEN_WIDTH/5*4), (float)(SCREEN_HEIGHT/3) };
 static const Vector2 CENTER_SPAWN       = { (float)(SCREEN_WIDTH/2), (float)(SCREEN_HEIGHT/4) };
 
 static const EnemyConfig ENEMY_CONFIGS[ENEMY_TYPE_COUNT] = {
@@ -64,9 +68,9 @@ static const EnemyConfig ENEMY_CONFIGS[ENEMY_TYPE_COUNT] = {
     .infinite = { .radius = 70.0f, .speed = 2.0f },
   },
   [BUFF] = {
-    .linear   = { .speed = 80.0f,  .distance = 50.0f,  .angle = 0.0f },
-    .circular = { .radius = 30.0f, .angular_speed = 0.5f },
-    .infinite = { .radius = 30.0f, .speed = 0.7f },
+    .linear   = { .speed = 80.0f,  .distance = 200.0f,  .angle = 0.0f },
+    .circular = { .radius = 50.0f, .angular_speed = 0.5f },
+    .infinite = { .radius = 50.0f, .speed = 0.7f },
   },
 };
 

@@ -89,13 +89,17 @@ int main(void)
     Draw_health_bar(health_bar);
     update_xp_bar(&xp_bar);
     
-    DrawRectangleLines(player.collision.x, player.collision.y, player.collision.width, player.collision.height, RED);
-    DrawCircleLines(ball.texture_pos.x + ball.radius, ball.texture_pos.y + ball.radius, ball.radius, RED);
+    //debugging
+    //DrawText(TextFormat("FPS: %d", GetFPS()), 10, 10, 20, BLACK);
+    //DrawRectangleLines(player.collision.x, player.collision.y, player.collision.width, player.collision.height, RED);
+    //DrawCircleLines(ball.texture_pos.x + ball.radius, ball.texture_pos.y + ball.radius, ball.radius, RED);
+    
     EndDrawing();
-
     if (health_bar.lives <= 0)
       break;
   }
+
+  
   UnloadTexture(player_texture);
   UnloadTexture(ball_texture);
   UnloadTexture(enemy_normal_texture);
